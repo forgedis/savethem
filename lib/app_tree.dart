@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:savethem/pages/addReceipt.dart';
-import 'package:savethem/pages/expences.dart';
-import 'package:savethem/pages/overview.dart';
-import 'package:savethem/pages/profile.dart';
-import 'package:savethem/pages/settings.dart';
+import 'package:savethem/pages/add_receipt_page.dart';
+import 'package:savethem/pages/expences_page.dart';
+import 'package:savethem/pages/home_page.dart';
+import 'package:savethem/pages/profile_page.dart';
+import 'package:savethem/pages/settings_page.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+class AppTree extends StatefulWidget {
+  const AppTree({Key? key}) : super(key: key);
+  static const String routeName = '/app_tree';
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<AppTree> createState() => _AppTreeState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _AppTreeState extends State<AppTree> {
   int currentTab = 0;
   final List<Widget> screens = [
-    Overview(),
-    Profile(),
-    Settings(),
-    Expences(),
-    AddReceipt()
+    HomePage(),
+    ProfilePage(),
+    SettingsPage(),
+    ExpencesPage(),
+    AddReceiptPage()
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = Overview();
+  Widget currentScreen = HomePage();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _HomepageState extends State<Homepage> {
         child: Icon(Icons.add),
         onPressed: () {
           setState(() {
-            currentScreen = AddReceipt();
+            currentScreen = AddReceiptPage();
             currentTab = 4;
           });
         },
@@ -56,7 +56,7 @@ class _HomepageState extends State<Homepage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Overview();
+                        currentScreen = HomePage();
                         currentTab = 0;
                       });
                     },
@@ -64,11 +64,11 @@ class _HomepageState extends State<Homepage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.dashboard,
+                          Icons.home,
                           color: currentTab == 0 ? Colors.blue : Colors.grey,
                         ),
                         Text(
-                          'Overview',
+                          'Home',
                           style: TextStyle(
                               color:
                                   currentTab == 0 ? Colors.blue : Colors.grey),
@@ -80,7 +80,7 @@ class _HomepageState extends State<Homepage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Expences();
+                        currentScreen = ExpencesPage();
                         currentTab = 1;
                       });
                     },
@@ -111,7 +111,7 @@ class _HomepageState extends State<Homepage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Profile();
+                        currentScreen = ProfilePage();
                         currentTab = 2;
                       });
                     },
@@ -135,7 +135,7 @@ class _HomepageState extends State<Homepage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = Settings();
+                        currentScreen = SettingsPage();
                         currentTab = 3;
                       });
                     },

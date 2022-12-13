@@ -1,26 +1,50 @@
+import 'package:appwrite/appwrite.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:savethem/auth/auth_state.dart';
-import 'package:savethem/pages/overview.dart';
-import 'package:savethem/pages/signup.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:savethem/app_tree.dart';
+import 'package:savethem/pages/signup_page.dart';
+import '../auth/validation.dart';
+import '../main.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+
+class LoginPage extends ConsumerStatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+  static const String routeName = '/login';
 
   @override
-  State<Login> createState() => _LoginState();
+  ConsumerState<LoginPage> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends ConsumerState<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _email = TextEditingController();
-  TextEditingController _password = TextEditingController();
+  String? email;
+  String? password;
+
+  @override
+  void initState() {
+    super.initState();
+    checkCurrentUser();
+  }
+
+  Future<void> checkCurrentUser() async {
+    try {
+      final user = await ref.read(appwriteAccountProvider).get();
+      Navigator.of(context).pushReplacementNamed(
+          AppTree.routeName,
+      );
+    } on AppwriteException catch (e) {
+      debugPrint(e.message);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Center(
+          child: Form(
+        key: _formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -40,8 +64,9 @@ class _LoginState extends State<Login> {
                     color: Colors.grey[200],
                     border: Border.all(color: Colors.white),
                     borderRadius: BorderRadius.circular(12)),
-                child: TextField(
-                  controller: _email,
+                child: TextFormField(
+                  validator: emailValidation,
+                  onSaved: (value) => email = value,
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Email',
@@ -60,8 +85,9 @@ class _LoginState extends State<Login> {
                     color: Colors.grey[200],
                     border: Border.all(color: Colors.white),
                     borderRadius: BorderRadius.circular(12)),
-                child: TextField(
-                  controller: _password,
+                child: TextFormField(
+                  validator: passwordValidation,
+                  onSaved: (value) => password = value,
                   obscureText: true,
                   decoration: InputDecoration(
                       border: InputBorder.none,
@@ -78,19 +104,7 @@ class _LoginState extends State<Login> {
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: GestureDetector(
                 onTap: () {
-
-                  AuthState state = Provider.of<AuthState>(context, listen: false);
-                  state.login(_email.text, _password.text);
-
-
-                  // Navigator.pushReplacement(
-                  //   context,
-                  //   PageRouteBuilder(
-                  //     pageBuilder: (context, animation1, animation2) => Overview(),
-                  //     transitionDuration: Duration.zero,
-                  //     reverseTransitionDuration: Duration.zero,
-                  //   ),
-                  // );
+                  validateAndLogin();
                   print('login click');
                 },
                 child: Container(
@@ -121,7 +135,8 @@ class _LoginState extends State<Login> {
                 ),
                 GestureDetector(
                   onTap: () {
-
+                    Navigator.of(context)
+                        .pushReplacementNamed(SignupPage.routeName);
                   },
                   child: Text(
                     ' Sign up now!',
@@ -137,5 +152,20 @@ class _LoginState extends State<Login> {
         ),
       )),
     );
+  }
+
+  void validateAndLogin() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      try {
+        await ref
+            .read(appwriteAccountProvider)
+            .createEmailSession(email: email!, password: password!);
+        Navigator.of(context).pushReplacementNamed(AppTree.routeName);
+      } on AppwriteException catch (e) {
+        debugPrint(e.message);
+      }
+    }
   }
 }

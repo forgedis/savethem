@@ -1,27 +1,33 @@
-
+import 'package:appwrite/appwrite.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:savethem/auth/auth_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:savethem/app_tree.dart';
+import 'package:savethem/main.dart';
+import '../auth/validation.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({Key? key}) : super(key: key);
+class SignupPage extends ConsumerStatefulWidget {
+  const SignupPage({Key? key}) : super(key: key);
+  static const String routeName = '/signun';
 
   @override
-  State<Signup> createState() => _SignupState();
+  ConsumerState<SignupPage> createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> {
+class _SignupState extends ConsumerState<SignupPage> {
 
-  TextEditingController _email = TextEditingController();
-  TextEditingController _password = TextEditingController();
-  TextEditingController _name = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String? email;
+  String? password;
+  String? name;
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Center(
+          child: Form(
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -41,8 +47,9 @@ class _SignupState extends State<Signup> {
                         color: Colors.grey[200],
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(12)),
-                    child: TextField(
-                      controller: _email,
+                    child: TextFormField(
+                      validator: emailValidation,
+                      onSaved: (value) => email = value,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Email',
@@ -61,8 +68,9 @@ class _SignupState extends State<Signup> {
                         color: Colors.grey[200],
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(12)),
-                    child: TextField(
-                      controller: _name,
+                    child: TextFormField(
+                      validator: nameValidation,
+                      onSaved: (value) => name = value,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Name',
@@ -81,27 +89,9 @@ class _SignupState extends State<Signup> {
                         color: Colors.grey[200],
                         border: Border.all(color: Colors.white),
                         borderRadius: BorderRadius.circular(12)),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Phone',
-                          prefixIcon: Icon(
-                            Icons.phone,
-                            color: Colors.black,
-                          )),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        border: Border.all(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12)),
-                    child: TextField(
-                      controller: _password,
+                    child: TextFormField(
+                      validator: passwordValidation,
+                      onSaved: (value) => password = value,
                       obscureText: true,
                       decoration: InputDecoration(
                           border: InputBorder.none,
@@ -118,18 +108,7 @@ class _SignupState extends State<Signup> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: GestureDetector(
                     onTap: () {
-
-                      AuthState state = Provider.of<AuthState>(context, listen: false);
-                      state.createAccount(_name.text, _email.text, _password.text);
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   PageRouteBuilder(
-                      //     pageBuilder: (context, animation1, animation2) => Overview(),
-                      //     transitionDuration: Duration.zero,
-                      //     reverseTransitionDuration: Duration.zero,
-                      //   ),
-                      // );
-                      print('sign up click');
+                      validateAndRegister();
                     },
                     child: Container(
                       padding: EdgeInsets.all(20),
@@ -153,5 +132,24 @@ class _SignupState extends State<Signup> {
             ),
           )),
     );
+  }
+  void validateAndRegister() async{
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      try{
+        await ref.read(appwriteAccountProvider).create(
+          userId: 'unique()',
+          name: name!,
+          email: email!,
+          password: password!
+        );
+        Navigator.of(context).pushReplacementNamed(
+            AppTree.routeName
+        );
+      }on AppwriteException catch(e){
+        debugPrint(e.message);
+      }
+    }
   }
 }

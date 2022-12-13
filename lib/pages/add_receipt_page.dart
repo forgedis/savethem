@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AddReceipt extends StatefulWidget {
-  const AddReceipt({Key? key}) : super(key: key);
+class AddReceiptPage extends StatefulWidget {
+  const AddReceiptPage({Key? key}) : super(key: key);
 
   @override
-  State<AddReceipt> createState() => _AddReceiptState();
+  State<AddReceiptPage> createState() => _AddReceiptPageState();
 }
 
-class _AddReceiptState extends State<AddReceipt> {
+class _AddReceiptPageState extends State<AddReceiptPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
