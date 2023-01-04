@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:savethem/app_tree.dart';
+import 'package:savethem/pages/login_or_signup_page.dart';
 import 'package:savethem/pages/login_page.dart';
 import 'package:savethem/pages/signup_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
               case AppTree.routeName:
                 return AppTree();
               default:
-                return const LoginPage();
+                return const LoginOrSignupPage();
             }
           },
         );

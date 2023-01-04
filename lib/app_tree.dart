@@ -29,9 +29,11 @@ class _AppTreeState extends State<AppTree> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF261c51),
       body: PageStorage(bucket: bucket, child: currentScreen),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, color: Colors.black),
+        backgroundColor: Color(0xFFf1cb46),
         onPressed: () {
           setState(() {
             currentScreen = AddReceiptPage();
@@ -42,6 +44,7 @@ class _AppTreeState extends State<AppTree> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
+        color: Color(0xFF8a5bf5),
         notchMargin: 10,
         child: Container(
           height: 60,
@@ -65,13 +68,13 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.home,
-                          color: currentTab == 0 ? Colors.blue : Colors.grey,
+                          color: currentTab == 0 ? Color(0xFFf1cb46) : Colors.black,
                         ),
                         Text(
                           'Home',
                           style: TextStyle(
                               color:
-                                  currentTab == 0 ? Colors.blue : Colors.grey),
+                                  currentTab == 0 ? Color(0xFFf1cb46) : Colors.black),
                         )
                       ],
                     ),
@@ -89,13 +92,13 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.euro,
-                          color: currentTab == 1 ? Colors.blue : Colors.grey,
+                          color: currentTab == 1 ? Color(0xFFf1cb46) : Colors.black,
                         ),
                         Text(
                           'Expences',
                           style: TextStyle(
                               color:
-                                  currentTab == 1 ? Colors.blue : Colors.grey),
+                                  currentTab == 1 ? Color(0xFFf1cb46) : Colors.black),
                         )
                       ],
                     ),
@@ -120,13 +123,13 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.person,
-                          color: currentTab == 2 ? Colors.blue : Colors.grey,
+                          color: currentTab == 2 ? Color(0xFFf1cb46) : Colors.black,
                         ),
                         Text(
                           'Profile',
                           style: TextStyle(
                               color:
-                                  currentTab == 2 ? Colors.blue : Colors.grey),
+                                  currentTab == 2 ? Color(0xFFf1cb46) : Colors.black),
                         )
                       ],
                     ),
@@ -144,13 +147,13 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.settings,
-                          color: currentTab == 3 ? Colors.blue : Colors.grey,
+                          color: currentTab == 3 ? Color(0xFFf1cb46) : Colors.black,
                         ),
                         Text(
                           'Settings',
                           style: TextStyle(
                               color:
-                                  currentTab == 3 ? Colors.blue : Colors.grey),
+                                  currentTab == 3 ? Color(0xFFf1cb46) : Colors.black),
                         )
                       ],
                     ),

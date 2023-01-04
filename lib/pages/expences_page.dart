@@ -11,9 +11,9 @@ class _ExpencesPageState extends State<ExpencesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Expences')),
+      backgroundColor: Color(0xFF261c51),
       body: Center(
-        child: Text('Expences Screen', style: TextStyle(fontSize: 40)),
+        child: Text('Expences Screen', style: TextStyle(fontSize: 40, color: Colors.white)),
       ),
     );
   }

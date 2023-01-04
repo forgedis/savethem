@@ -11,9 +11,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Profile')),
+      backgroundColor: Color(0xFF261c51),
       body: Center(
-        child: Text('Profile Screen', style: TextStyle(fontSize: 40)),
+        child: Text('Profile Screen', style: TextStyle(fontSize: 40, color: Colors.white)),
       ),
     );
   }

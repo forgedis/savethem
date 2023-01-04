@@ -15,12 +15,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+      backgroundColor: Color(0xFF261c51),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Settings Screen', style: TextStyle(fontSize: 40)),
+            Text('Settings Screen', style: TextStyle(fontSize: 40, color: Colors.white)),
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -35,6 +35,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 }
               },
               child: Text('log out'),
+              style: ButtonStyle(),
             )
           ],
         ),

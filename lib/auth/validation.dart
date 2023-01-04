@@ -13,8 +13,8 @@ String? nameValidation(String? value) {
 }
 
 String? passwordValidation(String? value) {
-  if (value == null || value.length < 6) {
-    return 'Password requires at least 6 characters';
+  if (value == null || value.length < 8) {
+    return 'Password requires at least 8 characters';
   }
   return null;
 }

@@ -11,9 +11,9 @@ class _AddReceiptPageState extends State<AddReceiptPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Receipt')),
+      backgroundColor: Color(0xFF261c51),
       body: Center(
-        child: Text('Add Receipt Screen', style: TextStyle(fontSize: 40)),
+        child: Text('Add Receipt Screen', style: TextStyle(fontSize: 40, color: Colors.white)),
       ),
     );
   }
