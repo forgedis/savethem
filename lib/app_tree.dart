@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:savethem/pages/add_receipt_page.dart';
+import 'package:savethem/pages/add_page.dart';
 import 'package:savethem/pages/expences_page.dart';
 import 'package:savethem/pages/home_page.dart';
 import 'package:savethem/pages/profile_page.dart';
@@ -20,7 +20,7 @@ class _AppTreeState extends State<AppTree> {
     ProfilePage(),
     SettingsPage(),
     ExpencesPage(),
-    AddReceiptPage()
+    AddPage()
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -36,7 +36,7 @@ class _AppTreeState extends State<AppTree> {
         backgroundColor: Color(0xFFf1cb46),
         onPressed: () {
           setState(() {
-            currentScreen = AddReceiptPage();
+            currentScreen = AddPage();
             currentTab = 4;
           });
         },

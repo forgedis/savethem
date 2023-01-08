@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:savethem/app_tree.dart';
 import 'package:savethem/pages/login_page.dart';
 import 'package:savethem/pages/signup_page.dart';
-import '../auth/validation.dart';
 import '../main.dart';
 
 class LoginOrSignupPage extends ConsumerStatefulWidget {
