@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:savethem/pages/add_page.dart';
 import 'package:savethem/pages/expenses_page.dart';
 import 'package:savethem/pages/home_page.dart';
+import 'package:savethem/pages/empty_page.dart';
 import 'package:savethem/pages/profile_page.dart';
-import 'package:savethem/pages/settings_page.dart';
 
 class AppTree extends StatefulWidget {
   const AppTree({Key? key}) : super(key: key);
@@ -17,8 +17,8 @@ class _AppTreeState extends State<AppTree> {
   int currentTab = 0;
   final List<Widget> screens = [
     HomePage(),
+    EmptyPage(),
     ProfilePage(),
-    SettingsPage(),
     ExpensesPage(),
     AddPage()
   ];
@@ -124,7 +124,7 @@ class _AppTreeState extends State<AppTree> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = ProfilePage();
+                        currentScreen = EmptyPage();
                         currentTab = 2;
                       });
                     },
@@ -132,13 +132,11 @@ class _AppTreeState extends State<AppTree> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.person,
-                          color: currentTab == 2
-                              ? Color(0xFFf1cb46)
-                              : Colors.black,
+                          Icons.space_bar,
+                          color: currentTab == 2 ? Color(0xFFf1cb46) : Colors.black,
                         ),
                         Text(
-                          'Profile',
+                          'Empty',
                           style: TextStyle(
                               color: currentTab == 2
                                   ? Color(0xFFf1cb46)
@@ -151,7 +149,7 @@ class _AppTreeState extends State<AppTree> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = SettingsPage();
+                        currentScreen = ProfilePage();
                         currentTab = 3;
                       });
                     },
@@ -159,13 +157,11 @@ class _AppTreeState extends State<AppTree> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.settings,
-                          color: currentTab == 3
-                              ? Color(0xFFf1cb46)
-                              : Colors.black,
+                          Icons.person,
+                          color: currentTab == 3 ? Color(0xFFf1cb46) : Colors.black,
                         ),
                         Text(
-                          'Settings',
+                          'Profile',
                           style: TextStyle(
                               color: currentTab == 3
                                   ? Color(0xFFf1cb46)
