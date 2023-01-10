@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:savethem/pages/add_page.dart';
-import 'package:savethem/pages/expences_page.dart';
+import 'package:savethem/pages/expenses_page.dart';
 import 'package:savethem/pages/home_page.dart';
 import 'package:savethem/pages/profile_page.dart';
 import 'package:savethem/pages/settings_page.dart';
@@ -19,7 +19,7 @@ class _AppTreeState extends State<AppTree> {
     HomePage(),
     ProfilePage(),
     SettingsPage(),
-    ExpencesPage(),
+    ExpensesPage(),
     AddPage()
   ];
 
@@ -28,18 +28,22 @@ class _AppTreeState extends State<AppTree> {
 
   @override
   Widget build(BuildContext context) {
+    bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       backgroundColor: Color(0xFF261c51),
       body: PageStorage(bucket: bucket, child: currentScreen),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, color: Colors.black),
-        backgroundColor: Color(0xFFf1cb46),
-        onPressed: () {
-          setState(() {
-            currentScreen = AddPage();
-            currentTab = 4;
-          });
-        },
+      floatingActionButton: Visibility(
+        visible: !keyboardIsOpen,
+        child: FloatingActionButton(
+          child: Icon(Icons.add, color: Colors.black),
+          backgroundColor: Color(0xFFf1cb46),
+          onPressed: () {
+            setState(() {
+              currentScreen = AddPage();
+              currentTab = 4;
+            });
+          },
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -68,13 +72,16 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.home,
-                          color: currentTab == 0 ? Color(0xFFf1cb46) : Colors.black,
+                          color: currentTab == 0
+                              ? Color(0xFFf1cb46)
+                              : Colors.black,
                         ),
                         Text(
                           'Home',
                           style: TextStyle(
-                              color:
-                                  currentTab == 0 ? Color(0xFFf1cb46) : Colors.black),
+                              color: currentTab == 0
+                                  ? Color(0xFFf1cb46)
+                                  : Colors.black),
                         )
                       ],
                     ),
@@ -83,7 +90,7 @@ class _AppTreeState extends State<AppTree> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = ExpencesPage();
+                        currentScreen = ExpensesPage();
                         currentTab = 1;
                       });
                     },
@@ -92,13 +99,16 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.euro,
-                          color: currentTab == 1 ? Color(0xFFf1cb46) : Colors.black,
+                          color: currentTab == 1
+                              ? Color(0xFFf1cb46)
+                              : Colors.black,
                         ),
                         Text(
                           'Expences',
                           style: TextStyle(
-                              color:
-                                  currentTab == 1 ? Color(0xFFf1cb46) : Colors.black),
+                              color: currentTab == 1
+                                  ? Color(0xFFf1cb46)
+                                  : Colors.black),
                         )
                       ],
                     ),
@@ -123,13 +133,16 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.person,
-                          color: currentTab == 2 ? Color(0xFFf1cb46) : Colors.black,
+                          color: currentTab == 2
+                              ? Color(0xFFf1cb46)
+                              : Colors.black,
                         ),
                         Text(
                           'Profile',
                           style: TextStyle(
-                              color:
-                                  currentTab == 2 ? Color(0xFFf1cb46) : Colors.black),
+                              color: currentTab == 2
+                                  ? Color(0xFFf1cb46)
+                                  : Colors.black),
                         )
                       ],
                     ),
@@ -147,13 +160,16 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.settings,
-                          color: currentTab == 3 ? Color(0xFFf1cb46) : Colors.black,
+                          color: currentTab == 3
+                              ? Color(0xFFf1cb46)
+                              : Colors.black,
                         ),
                         Text(
                           'Settings',
                           style: TextStyle(
-                              color:
-                                  currentTab == 3 ? Color(0xFFf1cb46) : Colors.black),
+                              color: currentTab == 3
+                                  ? Color(0xFFf1cb46)
+                                  : Colors.black),
                         )
                       ],
                     ),

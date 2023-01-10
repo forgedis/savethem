@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   Map<String, double> dataMap = {
     "Food": 5,
     "Car": 3,
@@ -33,7 +32,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               Text(
-                  'Expenses',
+                'Expenses',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -43,30 +42,31 @@ class _HomePageState extends State<HomePage> {
               Container(
                 padding: EdgeInsets.all(35),
                 child: PieChart(
-                    dataMap: dataMap,
+                  dataMap: dataMap,
                   animationDuration: Duration(milliseconds: 1000),
                   ringStrokeWidth: 10,
                   legendOptions: LegendOptions(
-                    legendPosition: LegendPosition.bottom,
-                    legendTextStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
-                    )
-                  ),
+                      legendPosition: LegendPosition.bottom,
+                      legendTextStyle: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
                   chartType: ChartType.ring,
                   chartValuesOptions: ChartValuesOptions(
                     showChartValueBackground: false,
                     showChartValues: false,
                     decimalPlaces: 1,
                   ),
-                  centerText: 'EXPENSES',
+                  centerText: '24000 dkk',
+                  centerTextStyle: TextStyle(
+                      color: Color(0xFFf1cb46),
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ],
           ),
         ),
       ),
-        // child: Text('Homepage Screen', style: TextStyle(fontSize: 40, color: Colors.white)),
+      // child: Text('Homepage Screen', style: TextStyle(fontSize: 40, color: Colors.white)),
     );
   }
 }
