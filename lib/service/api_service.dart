@@ -1,13 +1,14 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:savethem/auth/resources/app_constants.dart';
-
 import '../model/spending.dart';
+import '../model/user.dart';
 
 class ApiService {
   static ApiService? _instance;
   late final Client _client;
   late final Databases _database;
   late final Storage _storage;
+  late final Account _account;
 
   ApiService._internal() {
     _client = Client(
@@ -15,6 +16,7 @@ class ApiService {
 
     _storage = Storage(_client);
     _database = Databases(_client);
+    _account = Account(_client);
   }
 
   static ApiService get instance {
@@ -22,6 +24,11 @@ class ApiService {
       _instance = ApiService._internal();
     }
     return _instance!;
+  }
+
+  Future<User> getUser() async {
+    final currentUser = await _account.get();
+    return User(id: currentUser.$id, name: currentUser.name, email: currentUser.email, phone: currentUser.phone);
   }
 
   Future<Spending> addReceipt({required Spending receipt})
