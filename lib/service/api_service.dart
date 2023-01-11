@@ -24,10 +24,21 @@ class ApiService {
     return _instance!;
   }
 
-  Future<Spending> addReceipt({required Spending receipt})
+  Future<Spending> addSpending({required Spending spending})
   async {
-    final res = await _database.createDocument(databaseId: '63bad69541af7c758859', collectionId: '63bad6a430f009791d53', documentId: ID.unique(), data: receipt.toJson());
+    final res = await _database.createDocument(databaseId: '63bad69541af7c758859', collectionId: '63bad6a430f009791d53', documentId: ID.unique(), data: spending.toJson());
     return Spending.fromJson(res.data);
+  }
+
+  Future<List<Spending>> getSpending({required String userID}) async {
+    List<Spending> spendingList = [];
+    final res = await _database.listDocuments(databaseId: '63bad69541af7c758859', collectionId: '63bad6a430f009791d53', queries: [Query.equal('userID', userID), Query.notEqual('category', 'custom')]);
+
+    for (var element in res.documents) {
+      spendingList.add(Spending.fromJson(element.data));
+    }
+
+    return spendingList;
   }
   
   Future<String> uploadImage(InputFile image) async {

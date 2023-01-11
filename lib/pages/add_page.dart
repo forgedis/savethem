@@ -18,6 +18,7 @@ const List<String> categoryList = <String>[
   'Housing',
   'Fun',
   'Restaurant',
+  'Car',
   'Custom'
 ];
 
@@ -323,7 +324,7 @@ class _AddState extends ConsumerState<AddPage> {
                         );
                         try {
                           final spending = await ApiService.instance
-                              .addReceipt(receipt: data);
+                              .addSpending(spending: data);
                         } on AppwriteException catch (e) {
                           print(e.message);
                         }
