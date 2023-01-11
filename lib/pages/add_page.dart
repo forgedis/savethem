@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:savethem/model/spending.dart';
+import 'package:savethem/pages/home_page.dart';
 import 'package:savethem/service/api_service.dart';
 import 'package:intl/intl.dart';
 import '../main.dart';
@@ -330,7 +331,7 @@ class _AddState extends ConsumerState<AddPage> {
                         }
 
                         Navigator.of(context)
-                            .pushReplacementNamed(ExpensesPage.routeName);
+                            .pushReplacementNamed(HomePage.routeName);
                       },
                       icon:
                           const Icon(Icons.save, color: Colors.black, size: 30),
