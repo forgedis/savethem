@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:savethem/service/api_service.dart';
-
 import '../main.dart';
 import '../model/spending.dart';
 
@@ -16,8 +16,9 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-
   void fetchData() async {
+    setState(() => isLoading = true);
+
     user = await ref.read(appwriteAccountProvider).get();
     spendings = await ApiService.instance.getSpending(userID: user.$id);
 
@@ -29,6 +30,8 @@ class _HomePageState extends ConsumerState<HomePage> {
         totalPrice += element.price;
       }
     });
+
+    setState(() => isLoading = false);
   }
 
   @override
@@ -39,15 +42,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   late final user;
   List<Spending> spendings = [];
-
+  bool isLoading = false;
   double totalPrice = 0;
-
-  Map<String, double> dataMap = {
-    "Food": 5,
-    "Car": 3,
-    "Housing": 2,
-    "Free time": 2,
-  };
+  Map<String, double> dataMap = {};
 
   @override
   Widget build(BuildContext context) {
@@ -57,38 +54,47 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: Padding(
           padding: const EdgeInsets.all(25),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Welcome back \n' + 'Matej Horvath',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
+              if (isLoading) ...[
+                SpinKitThreeBounce(
                   color: Colors.white,
-                  fontSize: 25,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.all(35),
-                child: PieChart(
-                  dataMap: dataMap,
-                  animationDuration: Duration(milliseconds: 1000),
-                  ringStrokeWidth: 10,
-                  legendOptions: LegendOptions(
-                      legendPosition: LegendPosition.bottom,
-                      legendTextStyle: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white)),
-                  chartType: ChartType.ring,
-                  chartValuesOptions: ChartValuesOptions(
-                    showChartValueBackground: false,
-                    showChartValues: false,
-                    decimalPlaces: 1,
+                  size: 50.0,
+                )
+              ],
+              if (!isLoading) ...[
+                Text(
+                  'Welcome back \n' + user.name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 25,
                   ),
-                  centerText: totalPrice.toString() + ' DKK',
-                  centerTextStyle: TextStyle(
-                      color: Color(0xFFf1cb46),
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
                 ),
-              ),
+                Container(
+                  padding: EdgeInsets.all(35),
+                  child: PieChart(
+                    dataMap: dataMap,
+                    animationDuration: Duration(milliseconds: 1000),
+                    ringStrokeWidth: 10,
+                    legendOptions: LegendOptions(
+                        legendPosition: LegendPosition.bottom,
+                        legendTextStyle: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white)),
+                    chartType: ChartType.ring,
+                    chartValuesOptions: ChartValuesOptions(
+                      showChartValueBackground: false,
+                      showChartValues: false,
+                      decimalPlaces: 1,
+                    ),
+                    centerText: totalPrice.toString() + ' DKK',
+                    centerTextStyle: TextStyle(
+                        color: Color(0xFFf1cb46),
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ],
           ),
         ),
