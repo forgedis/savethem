@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:savethem/pages/add_page.dart';
 import 'package:savethem/pages/expenses_page.dart';
 import 'package:savethem/pages/home_page.dart';
-import 'package:savethem/pages/empty_page.dart';
+import 'package:savethem/pages/category_page.dart';
 import 'package:savethem/pages/profile_page.dart';
 
 class AppTree extends StatefulWidget {
@@ -17,7 +17,7 @@ class _AppTreeState extends State<AppTree> {
   int currentTab = 0;
   final List<Widget> screens = [
     HomePage(),
-    EmptyPage(),
+    CategoryPage(),
     ProfilePage(),
     ExpensesPage(),
     AddPage()
@@ -124,7 +124,7 @@ class _AppTreeState extends State<AppTree> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = EmptyPage();
+                        currentScreen = CategoryPage();
                         currentTab = 2;
                       });
                     },
@@ -132,11 +132,11 @@ class _AppTreeState extends State<AppTree> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.space_bar,
+                          Icons.list,
                           color: currentTab == 2 ? Color(0xFFf1cb46) : Colors.black,
                         ),
                         Text(
-                          'Empty',
+                          'Categories',
                           style: TextStyle(
                               color: currentTab == 2
                                   ? Color(0xFFf1cb46)

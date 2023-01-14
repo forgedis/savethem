@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:savethem/service/api_service.dart';
 import '../main.dart';
+import '../model/category.dart';
 import '../model/spending.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -24,12 +25,30 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     setState(() {
       dataMap = Map.fromIterable(spendings,
-          key: (e) => e.category, value: (e) => e.price);
+          key: (e) => e.categoryID, value: (e) => e.price);
 
       for (var element in spendings) {
         totalPrice += element.price;
       }
+      //
+      // var categoryList = dataMap.keys.toList();
+      //
+      // List<Category> list = [];
+      //
+      // categoryList.forEach((element) async{
+      //   list.add(await ApiService.instance.getCategoryByID(categoryID: element));
+      //
+      //   list.forEach((element) {
+      //     print(element.name);
+      //   });
+      //   // print(element);
+      // });
+      //
+      // finalDataMap = Map.fromIterable(list,
+      //     key: (e) => e.name, value: (e) => e.price);
     });
+
+
 
     setState(() => isLoading = false);
   }
@@ -45,6 +64,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   bool isLoading = false;
   double totalPrice = 0;
   Map<String, double> dataMap = {};
+  Map<String, double> finalDataMap = {};
 
   @override
   Widget build(BuildContext context) {
