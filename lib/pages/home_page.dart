@@ -26,52 +26,22 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     user = await ref.read(appwriteAccountProvider).get();
     spendings = await ApiService.instance.getSpending(userID: user.$id);
-
-    // categories.add(await ApiService.instance.getCategoryByID(categoryID: '63c2a3f9c685fd16ad00'));
-    // categories.add(await ApiService.instance.getCategoryByID(categoryID: '63c2a4020c68d7125043'));
-    // categories.add(await ApiService.instance.getCategoryByID(categoryID: '63c2a40f0cccbcaa7676'));
-    // categories.add(await ApiService.instance.getCategoryByID(categoryID: '63c2a3f1d5068259032e'));
-
-
+    await Future.forEach(spendings, (element) async {
+      var category = await ApiService.instance.getCategoryByID(categoryID: element.categoryID);
+      categories.add(await ApiService.instance.getCategoryByID(categoryID: element.categoryID));
+      usedCategoryDataMap[category] = element.price;
+    });
 
     setState(() {
-      dataMap = Map.fromIterable(spendings,
-          key: (e) => e.categoryID, value: (e) => e.price);
+      Map<String, double> tempMap = usedCategoryDataMap.map((key, value) {
+        return MapEntry(key.name, value);
+      });
+      dataMap = tempMap;
 
       for (var element in spendings) {
         totalPrice += element.price;
       }
-
-      spendings.forEach((element) async {
-        categories.add(await ApiService.instance.getCategoryByID(categoryID: element.categoryID));
-
-        // finalDataMap = {
-        //   categories.first.name : spendings.first.price
-        // };
-        //
-        // totalPrice = spendings.first.price;
-
-      });
-
-
-      // var categoryList = dataMap.keys.toList();
-      //
-      // List<Category> list = [];
-      //
-      // categoryList.forEach((element) async{
-      //   list.add(await ApiService.instance.getCategoryByID(categoryID: element));
-      //
-      //   list.forEach((element) {
-      //     print(element.name);
-      //   });
-      //   // print(element);
-      // });
-      //
-      // finalDataMap = Map.fromIterable(list,
-      //     key: (e) => e.name, value: (e) => e.price);
     });
-
-
 
     setState(() => isLoading = false);
   }
@@ -88,6 +58,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   bool isLoading = false;
   double totalPrice = 0;
   Map<String, double> dataMap = {};
+  Map<dynamic, double> usedCategoryDataMap = {};
 
   @override
   Widget build(BuildContext context) {
