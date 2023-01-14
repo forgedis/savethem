@@ -17,11 +17,22 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  // Map<String, double> finalDataMap = {
+  //   'Test' : 123
+  // };
+
   void fetchData() async {
     setState(() => isLoading = true);
 
     user = await ref.read(appwriteAccountProvider).get();
     spendings = await ApiService.instance.getSpending(userID: user.$id);
+
+    // categories.add(await ApiService.instance.getCategoryByID(categoryID: '63c2a3f9c685fd16ad00'));
+    // categories.add(await ApiService.instance.getCategoryByID(categoryID: '63c2a4020c68d7125043'));
+    // categories.add(await ApiService.instance.getCategoryByID(categoryID: '63c2a40f0cccbcaa7676'));
+    // categories.add(await ApiService.instance.getCategoryByID(categoryID: '63c2a3f1d5068259032e'));
+
+
 
     setState(() {
       dataMap = Map.fromIterable(spendings,
@@ -30,7 +41,19 @@ class _HomePageState extends ConsumerState<HomePage> {
       for (var element in spendings) {
         totalPrice += element.price;
       }
-      //
+
+      spendings.forEach((element) async {
+        categories.add(await ApiService.instance.getCategoryByID(categoryID: element.categoryID));
+
+        // finalDataMap = {
+        //   categories.first.name : spendings.first.price
+        // };
+        //
+        // totalPrice = spendings.first.price;
+
+      });
+
+
       // var categoryList = dataMap.keys.toList();
       //
       // List<Category> list = [];
@@ -61,10 +84,10 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   late final user;
   List<Spending> spendings = [];
+  List<Category> categories = [];
   bool isLoading = false;
   double totalPrice = 0;
   Map<String, double> dataMap = {};
-  Map<String, double> finalDataMap = {};
 
   @override
   Widget build(BuildContext context) {
@@ -73,49 +96,51 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (isLoading) ...[
-                SpinKitThreeBounce(
-                  color: Colors.white,
-                  size: 50.0,
-                )
-              ],
-              if (!isLoading) ...[
-                Text(
-                  'Welcome back \n' + user.name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (isLoading) ...[
+                  SpinKitThreeBounce(
                     color: Colors.white,
-                    fontSize: 25,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(35),
-                  child: PieChart(
-                    dataMap: dataMap,
-                    animationDuration: Duration(milliseconds: 1000),
-                    ringStrokeWidth: 10,
-                    legendOptions: LegendOptions(
-                        legendPosition: LegendPosition.bottom,
-                        legendTextStyle: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white)),
-                    chartType: ChartType.ring,
-                    chartValuesOptions: ChartValuesOptions(
-                      showChartValueBackground: false,
-                      showChartValues: false,
-                      decimalPlaces: 1,
+                    size: 50.0,
+                  )
+                ],
+                if (!isLoading) ...[
+                  Text(
+                    'Welcome back \n' + user.name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 25,
                     ),
-                    centerText: totalPrice.toString() + ' DKK',
-                    centerTextStyle: TextStyle(
-                        color: Color(0xFFf1cb46),
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold),
                   ),
-                ),
+                  Container(
+                    padding: EdgeInsets.all(35),
+                    child: PieChart(
+                      dataMap: dataMap,
+                      animationDuration: Duration(milliseconds: 1000),
+                      ringStrokeWidth: 10,
+                      legendOptions: LegendOptions(
+                          legendPosition: LegendPosition.bottom,
+                          legendTextStyle: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white)),
+                      chartType: ChartType.ring,
+                      chartValuesOptions: ChartValuesOptions(
+                        showChartValueBackground: false,
+                        showChartValues: false,
+                        decimalPlaces: 1,
+                      ),
+                      centerText: totalPrice.toString() + ' DKK',
+                      centerTextStyle: TextStyle(
+                          color: Color(0xFFf1cb46),
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
