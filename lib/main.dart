@@ -10,7 +10,7 @@ import 'auth/resources/app_constants.dart';
 final appwriteClientProvider = Provider<Client>((ref) {
   Client client = Client();
 
-  client.setEndpoint(AppConstants.endPoint).setProject(AppConstants.projectID);
+  client.setEndpoint(AppConstants.endPoint).setProject(AppConstants.projectId);
 
   return client;
 });

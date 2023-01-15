@@ -13,7 +13,7 @@ class ApiService {
 
   ApiService._internal() {
     _client = Client(endPoint: AppConstants.endPoint)
-        .setProject(AppConstants.projectID)
+        .setProject(AppConstants.projectId)
         .setSelfSigned();
 
     _storage = Storage(_client);

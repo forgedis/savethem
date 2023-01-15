@@ -35,6 +35,9 @@ class _AddState extends ConsumerState<AddPage> {
   bool _imageAdded = false;
   InputFile _file = InputFile(path: '');
 
+  /*
+  This method gets data from the database and also sets data for categoryNames
+   */
   void fetchData() async {
     final user = await ref.read(appwriteAccountProvider).get();
     _categoryList = await ApiService.instance.getCategory(userId: user.$id);
