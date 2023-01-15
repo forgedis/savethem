@@ -1,10 +1,8 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:savethem/model/category.dart';
-import 'package:savethem/service/api_service.dart';
-
+import '../model/category.dart';
+import '../service/api_service.dart';
 import '../main.dart';
 
 class CategoryPage extends ConsumerStatefulWidget {
@@ -15,69 +13,70 @@ class CategoryPage extends ConsumerStatefulWidget {
 }
 
 class _CategoryPageState extends ConsumerState<CategoryPage> {
-  late final user;
-  String editCategoryID = '';
-  String deleteCategoryID = '';
-  bool isLoading = false;
+  late final _user;
+  String _editCategoryId = '';
+  String _deleteCategoryId = '';
+  bool _isLoading = false;
+  final _addCategoryTEC = TextEditingController();
+  final _editCategoryTEC = TextEditingController();
+
+  void getUser() async {
+    setState(() => _isLoading = true);
+    final retrievedUser = await ref.read(appwriteAccountProvider).get();
+
+    setState(() {
+      _user = retrievedUser;
+    });
+
+    setState(() => _isLoading = false);
+  }
 
   @override
   void initState() {
     super.initState();
     getUser();
-    addCategoryTEC.clear();
+    _addCategoryTEC.clear();
   }
-
-  void getUser() async {
-    setState(() => isLoading = true);
-    final retrievedUser = await ref.read(appwriteAccountProvider).get();
-
-    setState(() {
-      user = retrievedUser;
-    });
-
-    setState(() => isLoading = false);
-  }
-
-  final addCategoryTEC = TextEditingController();
-  final editCategoryTEC = TextEditingController();
 
   _displayAddCategoryDialog(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Color(0xFF261c51),
-            title: Text(
+            backgroundColor: const Color(0xFF261c51),
+            title: const Text(
               'Add new category',
               style: TextStyle(color: Colors.white),
             ),
             content: TextField(
-              controller: addCategoryTEC,
+              controller: _addCategoryTEC,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                  borderSide:
+                      const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                  borderSide:
+                      const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                  borderSide:
+                      const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 15,
                   fontWeight: FontWeight.bold),
             ),
             actions: [
               ElevatedButton(
-                child: new Text('Add'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Color(0xFF8a5bf5),
+                  backgroundColor: const Color(0xFF8a5bf5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32.0),
                   ),
@@ -86,17 +85,17 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                   final user = await ref.read(appwriteAccountProvider).get();
 
                   final data =
-                      Category(name: addCategoryTEC.text, userID: user.$id);
+                      Category(name: _addCategoryTEC.text, userId: user.$id);
                   final category =
                       await ApiService.instance.addCategory(category: data);
                   Navigator.pop(context);
                 },
+                child: const Text('Add'),
               ),
               ElevatedButton(
-                child: new Text('Cancel'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Color(0xFF8a5bf5),
+                  backgroundColor: const Color(0xFF8a5bf5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32.0),
                   ),
@@ -104,6 +103,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
+                child: const Text('Cancel'),
               ),
             ],
           );
@@ -115,58 +115,60 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: Color(0xFF261c51),
-            title: Text(
+            backgroundColor: const Color(0xFF261c51),
+            title: const Text(
               'Edit category',
               style: TextStyle(color: Colors.white),
             ),
             content: TextField(
-              controller: editCategoryTEC,
+              controller: _editCategoryTEC,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                  borderSide:
+                      const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                  borderSide:
+                      const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                  borderSide:
+                      const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 15,
                   fontWeight: FontWeight.bold),
             ),
             actions: [
               ElevatedButton(
-                child: new Text('Save'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Color(0xFF8a5bf5),
+                  backgroundColor: const Color(0xFF8a5bf5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32.0),
                   ),
                 ),
                 onPressed: () async {
                   Category updatedCategory =
-                      Category(name: editCategoryTEC.text, userID: user.$id);
+                      Category(name: _editCategoryTEC.text, userId: _user.$id);
 
                   await ApiService.instance.updateCategory(
-                      categoryID: editCategoryID,
+                      categoryId: _editCategoryId,
                       categoryToUpdate: updatedCategory);
 
                   Navigator.pop(context);
                 },
+                child: const Text('Save'),
               ),
               ElevatedButton(
-                child: new Text('Cancel'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Color(0xFF8a5bf5),
+                  backgroundColor: const Color(0xFF8a5bf5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32.0),
                   ),
@@ -174,6 +176,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
+                child: const Text('Cancel'),
               ),
             ],
           );
@@ -190,29 +193,30 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
           actions: [
             IconButton(
                 onPressed: () => _displayAddCategoryDialog(context),
-                icon: Icon(
+                icon: const Icon(
                   Icons.add_circle_outlined,
                   size: 30,
                 ))
           ],
         ),
-        backgroundColor: Color(0xFF261c51),
+        backgroundColor: const Color(0xFF261c51),
         body: Padding(
-          padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
+          padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                if (isLoading) ...[
-                  SpinKitThreeBounce(
+                if (_isLoading) ...[
+                  const SpinKitThreeBounce(
                     color: Colors.white,
                     size: 50.0,
                   )
                 ],
-                if (!isLoading) ...[
+                if (!_isLoading) ...[
                   Container(
                     height: MediaQuery.of(context).size.height - 200,
                     child: FutureBuilder<List<Category>>(
-                      future: ApiService.instance.getCategory(userID: user.$id),
+                      future:
+                          ApiService.instance.getCategory(userId: _user.$id),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return ListView.builder(
@@ -220,7 +224,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Card(
-                                  color: Color(0xFF8a5bf5),
+                                  color: const Color(0xFF8a5bf5),
                                   elevation: 20,
                                   child: Row(
                                     mainAxisAlignment:
@@ -230,7 +234,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
                                           snapshot.data![index].name,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 15),
@@ -240,7 +244,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                                         children: [
                                           IconButton(
                                             onPressed: () async {
-                                              final categoryid =
+                                              final categoryId =
                                                   await ApiService.instance
                                                       .getCategoryID(
                                                           categoryName: snapshot
@@ -248,19 +252,19 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                                                               .name);
 
                                               setState(() {
-                                                editCategoryID = categoryid;
-                                                editCategoryTEC.text =
+                                                _editCategoryId = categoryId;
+                                                _editCategoryTEC.text =
                                                     snapshot.data![index].name;
                                               });
                                               _displayEditCategoryDialog(
                                                   context);
                                             },
-                                            icon: Icon(Icons.edit,
+                                            icon: const Icon(Icons.edit,
                                                 color: Color(0xFFf1cb46)),
                                           ),
                                           IconButton(
                                             onPressed: () async {
-                                              final categoryid =
+                                              final categoryId =
                                                   await ApiService.instance
                                                       .getCategoryID(
                                                           categoryName: snapshot
@@ -268,15 +272,15 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                                                               .name);
 
                                               setState(() {
-                                                deleteCategoryID = categoryid;
+                                                _deleteCategoryId = categoryId;
                                               });
 
                                               ApiService.instance
                                                   .deleteCategory(
-                                                      categoryID:
-                                                          deleteCategoryID);
+                                                      categoryId:
+                                                          _deleteCategoryId);
                                             },
-                                            icon: Icon(Icons.delete,
+                                            icon: const Icon(Icons.delete,
                                                 color: Colors.red),
                                           ),
                                         ],

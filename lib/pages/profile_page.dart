@@ -2,7 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:savethem/service/api_service.dart';
+import '../service/api_service.dart';
 import '../main.dart';
 import '../model/user.dart';
 import 'login_page.dart';
@@ -15,38 +15,38 @@ class ProfilePage extends ConsumerStatefulWidget {
 }
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
+  final _nameTEC = TextEditingController();
+  final _emailTEC = TextEditingController();
+  final _phoneTEC = TextEditingController();
+  User _user =
+      User(id: '1', name: 'test', email: 'test@test.dk', phone: '+45testest');
+  bool _isLoading = false;
+
+  void getUser() async {
+    setState(() => _isLoading = true);
+    final retrievedUser = await ApiService.instance.getUser();
+
+    setState(() {
+      _user = retrievedUser;
+    });
+
+    setState(() => _isLoading = false);
+  }
+
   @override
   initState() {
     super.initState();
     getUser();
   }
 
-  final nameTEC = TextEditingController();
-  final emailTEC = TextEditingController();
-  final phoneTEC = TextEditingController();
-
-  User user = User(id: '1', name: 'test', email: 'test@test.dk', phone: '+45testest');
-  bool isLoading = false;
-
-  void getUser() async {
-    setState(() => isLoading = true);
-    final retrievedUser = await ApiService.instance.getUser();
-
-    setState(() {
-       user = retrievedUser;
-    });
-
-    setState(() => isLoading = false);
-  }
-
   @override
   Widget build(BuildContext context) {
-    nameTEC.text = user.name;
-    emailTEC.text = user.email;
-    phoneTEC.text = user.phone;
+    _nameTEC.text = _user.name;
+    _emailTEC.text = _user.email;
+    _phoneTEC.text = _user.phone;
 
     return Scaffold(
-      backgroundColor: Color(0xFF261c51),
+      backgroundColor: const Color(0xFF261c51),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(35),
@@ -54,32 +54,33 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (isLoading) ...[
-                SpinKitThreeBounce(
+              if (_isLoading) ...[
+                const SpinKitThreeBounce(
                   color: Colors.white,
                   size: 50.0,
                 )
               ],
-              if (!isLoading) ...[
+              if (!_isLoading) ...[
                 Center(
-                  child: Text(user.name + "'s profile",
-                      style: TextStyle(fontSize: 30, color: Colors.white)),
+                  child: Text("${_user.name}'s profile",
+                      style:
+                          const TextStyle(fontSize: 30, color: Colors.white)),
                 ),
-                SizedBox(height: 20),
-                Center(
+                const SizedBox(height: 20),
+                const Center(
                   child: CircleAvatar(
+                    maxRadius: 60,
+                    backgroundColor: Color(0xFF8a5bf5),
                     child: Icon(
                       Icons.person,
                       color: Colors.white,
                       size: 50,
                     ),
-                    maxRadius: 60,
-                    backgroundColor: Color(0xFF8a5bf5),
                   ),
                 ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
                     'Name',
                     style: TextStyle(
@@ -88,37 +89,41 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 TextField(
                   textAlign: TextAlign.center,
                   enabled: false,
-                  controller: nameTEC,
+                  controller: _nameTEC,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 15),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                const SizedBox(height: 15),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
                     'Email',
                     style: TextStyle(
@@ -127,37 +132,41 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 TextField(
                   textAlign: TextAlign.center,
                   enabled: false,
-                  controller: emailTEC,
+                  controller: _emailTEC,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 15),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                const SizedBox(height: 15),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
                     'Phone',
                     style: TextStyle(
@@ -166,52 +175,44 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 TextField(
                   textAlign: TextAlign.center,
                   enabled: false,
-                  controller: phoneTEC,
+                  controller: _phoneTEC,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                      borderSide:
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 17,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Center(
                   child: Container(
                     height: 50,
                     width: 150,
                     child: ElevatedButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "Log out",
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(width: 5),
-                          Icon(Icons.logout)
-                        ],
-                      ),
                       onPressed: () async {
                         try {
                           await ref
@@ -226,10 +227,22 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Color(0xFF8a5bf5),
+                        backgroundColor: const Color(0xFF8a5bf5),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32.0),
                         ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Text(
+                            "Log out",
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(width: 5),
+                          Icon(Icons.logout)
+                        ],
                       ),
                     ),
                   ),

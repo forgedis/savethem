@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:savethem/service/api_service.dart';
+import '../service/api_service.dart';
 import '../main.dart';
 import '../model/category.dart';
 import '../model/spending.dart';
@@ -17,33 +17,39 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  // Map<String, double> finalDataMap = {
-  //   'Test' : 123
-  // };
+  late final _user;
+  List<Spending> _spendings = [];
+  List<Category> _categories = [];
+  bool _isLoading = false;
+  double _totalPrice = 0;
+  Map<String, double> _dataMap = {};
+  Map<dynamic, double> _usedCategoryDataMap = {};
 
   void fetchData() async {
-    setState(() => isLoading = true);
+    setState(() => _isLoading = true);
 
-    user = await ref.read(appwriteAccountProvider).get();
-    spendings = await ApiService.instance.getSpending(userID: user.$id);
-    await Future.forEach(spendings, (element) async {
-      var category = await ApiService.instance.getCategoryByID(categoryID: element.categoryID);
-      categories.add(await ApiService.instance.getCategoryByID(categoryID: element.categoryID));
-      usedCategoryDataMap[category] = element.price;
+    _user = await ref.read(appwriteAccountProvider).get();
+    _spendings = await ApiService.instance.getSpending(userId: _user.$id);
+    await Future.forEach(_spendings, (element) async {
+      var category = await ApiService.instance
+          .getCategoryByID(categoryId: element.categoryId);
+      _categories.add(await ApiService.instance
+          .getCategoryByID(categoryId: element.categoryId));
+      _usedCategoryDataMap[category] = element.price;
     });
 
     setState(() {
-      Map<String, double> tempMap = usedCategoryDataMap.map((key, value) {
+      Map<String, double> tempMap = _usedCategoryDataMap.map((key, value) {
         return MapEntry(key.name, value);
       });
-      dataMap = tempMap;
+      _dataMap = tempMap;
 
-      for (var element in spendings) {
-        totalPrice += element.price;
+      for (var element in _spendings) {
+        _totalPrice += element.price;
       }
     });
 
-    setState(() => isLoading = false);
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -52,18 +58,10 @@ class _HomePageState extends ConsumerState<HomePage> {
     fetchData();
   }
 
-  late final user;
-  List<Spending> spendings = [];
-  List<Category> categories = [];
-  bool isLoading = false;
-  double totalPrice = 0;
-  Map<String, double> dataMap = {};
-  Map<dynamic, double> usedCategoryDataMap = {};
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF261c51),
+      backgroundColor: const Color(0xFF261c51),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(25),
@@ -71,39 +69,40 @@ class _HomePageState extends ConsumerState<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (isLoading) ...[
-                  SpinKitThreeBounce(
+                if (_isLoading) ...[
+                  const SpinKitThreeBounce(
                     color: Colors.white,
                     size: 50.0,
                   )
                 ],
-                if (!isLoading) ...[
+                if (!_isLoading) ...[
                   Text(
-                    'Welcome back \n' + user.name,
-                    style: TextStyle(
+                    'Welcome back \n' + _user.name,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       fontSize: 25,
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(35),
+                    padding: const EdgeInsets.all(35),
                     child: PieChart(
-                      dataMap: dataMap,
-                      animationDuration: Duration(milliseconds: 1000),
+                      dataMap: _dataMap,
+                      animationDuration: const Duration(milliseconds: 1000),
                       ringStrokeWidth: 10,
-                      legendOptions: LegendOptions(
+                      legendOptions: const LegendOptions(
                           legendPosition: LegendPosition.bottom,
                           legendTextStyle: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white)),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
                       chartType: ChartType.ring,
-                      chartValuesOptions: ChartValuesOptions(
+                      chartValuesOptions: const ChartValuesOptions(
                         showChartValueBackground: false,
                         showChartValues: false,
                         decimalPlaces: 1,
                       ),
-                      centerText: totalPrice.toString() + ' DKK',
-                      centerTextStyle: TextStyle(
+                      centerText: '$_totalPrice DKK',
+                      centerTextStyle: const TextStyle(
                           color: Color(0xFFf1cb46),
                           fontSize: 30,
                           fontWeight: FontWeight.bold),
@@ -115,7 +114,6 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ),
       ),
-      // child: Text('Homepage Screen', style: TextStyle(fontSize: 40, color: Colors.white)),
     );
   }
 }

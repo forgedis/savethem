@@ -1,8 +1,7 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:savethem/app_tree.dart';
+import '../app_tree.dart';
 import '../auth/validation.dart';
 import '../main.dart';
 
@@ -16,33 +15,14 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginState extends ConsumerState<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-
-  String? email;
-  String? password;
-
-  @override
-  void initState() {
-    super.initState();
-    // checkCurrentUser();
-  }
-
-  // Future<void> checkCurrentUser() async {
-  //   try {
-  //     final user = await ref.read(appwriteAccountProvider).get();
-  //     Navigator.of(context).pushReplacementNamed(
-  //       AppTree.routeName,
-  //     );
-  //   } on AppwriteException catch (e) {
-  //     debugPrint(e.message);
-  //   }
-  // }
-
+  String? _email;
+  String? _password;
   bool _obscuredText = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF261c51),
+      backgroundColor: const Color(0xFF261c51),
       body: SafeArea(
           child: Form(
         key: _formKey,
@@ -53,8 +33,8 @@ class _LoginState extends ConsumerState<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 50),
-                Center(
+                const SizedBox(height: 50),
+                const Center(
                   child: Text(
                     'SaveThem',
                     style: TextStyle(
@@ -63,9 +43,9 @@ class _LoginState extends ConsumerState<LoginPage> {
                         color: Colors.white),
                   ),
                 ),
-                SizedBox(height: 300),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                const SizedBox(height: 300),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
                     'Email',
                     style: TextStyle(
@@ -74,37 +54,39 @@ class _LoginState extends ConsumerState<LoginPage> {
                         fontSize: 20),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 TextFormField(
                   validator: emailValidation,
-                  onSaved: (value) => email = value,
+                  onSaved: (value) => _email = value,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
-                        borderSide:
-                        BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF8a5bf5), width: 2),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
-                        borderSide:
-                        BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF8a5bf5), width: 2),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                        BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF8a5bf5), width: 2),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(color: Colors.red.shade900, width: 2)
-                      ),
-                      prefixIcon: Icon(Icons.email, color: Colors.white,)
-                  ),
-                  style: TextStyle(color: Colors.white),
+                          borderSide:
+                              BorderSide(color: Colors.red.shade900, width: 2)),
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: Colors.white,
+                      )),
+                  style: const TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
                     'Password',
                     style: TextStyle(
@@ -113,32 +95,35 @@ class _LoginState extends ConsumerState<LoginPage> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 TextFormField(
                   validator: passwordValidation,
-                  onSaved: (value) => password = value,
+                  onSaved: (value) => _password = value,
                   obscureText: _obscuredText,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide:
-                          BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide:
-                          BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                       borderRadius: BorderRadius.circular(30),
                     ),
                     errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Colors.red.shade900, width: 2)
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide:
+                            BorderSide(color: Colors.red.shade900, width: 2)),
+                    prefixIcon: const Icon(
+                      Icons.vpn_key,
+                      color: Colors.white,
                     ),
-                    prefixIcon: Icon(Icons.vpn_key, color: Colors.white,),
                     suffixIcon: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -152,9 +137,9 @@ class _LoginState extends ConsumerState<LoginPage> {
                           color: Colors.white),
                     ),
                   ),
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,16 +152,16 @@ class _LoginState extends ConsumerState<LoginPage> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(10, 0, 0, 30),
                           child: Container(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               bottom: 5,
                             ),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(
                               color: Color(0xFFf1cb46),
                               width: 1.0,
                             ))),
-                            child: Text(
+                            child: const Text(
                               "Forgot Password?",
                               style: TextStyle(
                                   color: Color(0xFFf1cb46),
@@ -187,12 +172,12 @@ class _LoginState extends ConsumerState<LoginPage> {
                         )),
                     CircleAvatar(
                       radius: 25,
-                      backgroundColor: Color(0xFFf1cb46),
+                      backgroundColor: const Color(0xFFf1cb46),
                       child: IconButton(
                         onPressed: validateAndLogin,
                         icon: const Icon(Icons.arrow_forward,
                             color: Colors.black, size: 30),
-                        color: Color(0xFFf1cb46),
+                        color: const Color(0xFFf1cb46),
                       ),
                     )
                   ],
@@ -212,7 +197,7 @@ class _LoginState extends ConsumerState<LoginPage> {
       try {
         await ref
             .read(appwriteAccountProvider)
-            .createEmailSession(email: email!, password: password!);
+            .createEmailSession(email: _email!, password: _password!);
         Navigator.of(context).pushReplacementNamed(AppTree.routeName);
       } on AppwriteException catch (e) {
         debugPrint(e.message);

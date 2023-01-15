@@ -1,5 +1,5 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:savethem/auth/resources/app_constants.dart';
+import '../auth/resources/app_constants.dart';
 import '../model/spending.dart';
 import '../model/category.dart';
 import '../model/user.dart';
@@ -46,6 +46,20 @@ class ApiService {
     return Spending.fromJson(res.data);
   }
 
+  Future<List<Spending>> getSpending({required String userId}) async {
+    List<Spending> spendingList = [];
+    final res = await _database.listDocuments(
+        databaseId: '63bad69541af7c758859',
+        collectionId: '63bad6a430f009791d53',
+        queries: [Query.equal('userID', userId)]);
+
+    for (var element in res.documents) {
+      spendingList.add(Spending.fromJson(element.data));
+    }
+
+    return spendingList;
+  }
+
   Future<Category> addCategory({required Category category}) async {
     final res = await _database.createDocument(
         databaseId: '63bad69541af7c758859',
@@ -55,12 +69,12 @@ class ApiService {
     return Category.fromJson(res.data);
   }
 
-  Future<List<Category>> getCategory({required String userID}) async {
+  Future<List<Category>> getCategory({required String userId}) async {
     List<Category> categoryList = [];
     final res = await _database.listDocuments(
         databaseId: '63bad69541af7c758859',
         collectionId: '63c026a2bc6acf48e1e3',
-        queries: [Query.equal('userID', userID)]);
+        queries: [Query.equal('userID', userId)]);
 
     for (var element in res.documents) {
       categoryList.add(Category.fromJson(element.data));
@@ -69,61 +83,44 @@ class ApiService {
     return categoryList;
   }
 
-  Future<List<Spending>> getSpending({required String userID}) async {
-    List<Spending> spendingList = [];
-    final res = await _database.listDocuments(
+  Future<Category> getCategoryByID({required String categoryId}) async {
+    final res = await _database.getDocument(
         databaseId: '63bad69541af7c758859',
-        collectionId: '63bad6a430f009791d53',
-        queries: [Query.equal('userID', userID)]);
+        collectionId: '63c026a2bc6acf48e1e3',
+        documentId: categoryId);
 
-    for (var element in res.documents) {
-      spendingList.add(Spending.fromJson(element.data));
-    }
-
-    return spendingList;
+    return Category.fromJson(res.data);
   }
 
   Future<String> getCategoryID({required String categoryName}) async {
-    String categoryID = '';
+    String categoryId = '';
     final res = await _database.listDocuments(
         databaseId: '63bad69541af7c758859',
         collectionId: '63c026a2bc6acf48e1e3',
         queries: [Query.equal('name', categoryName)]);
 
     for (var element in res.documents) {
-      categoryID = element.$id;
+      categoryId = element.$id;
     }
-    return categoryID;
+    return categoryId;
   }
 
   Future<Category> updateCategory(
-      {required String categoryID, required Category categoryToUpdate}) async {
+      {required String categoryId, required Category categoryToUpdate}) async {
     final res = await _database.updateDocument(
         databaseId: '63bad69541af7c758859',
         collectionId: '63c026a2bc6acf48e1e3',
-        documentId: categoryID,
+        documentId: categoryId,
         data: categoryToUpdate.toJson());
 
     return Category.fromJson(res.data);
   }
 
-  void deleteCategory({required String categoryID}) async {
+  void deleteCategory({required String categoryId}) async {
     await _database.deleteDocument(
         databaseId: '63bad69541af7c758859',
         collectionId: '63c026a2bc6acf48e1e3',
-        documentId: categoryID);
-  }
-
-  Future<Category> getCategoryByID({required String categoryID}) async {
-    final category;
-    final res = await _database.getDocument(
-        databaseId: '63bad69541af7c758859',
-        collectionId: '63c026a2bc6acf48e1e3',
-        documentId: categoryID);
-
-    category = res.data;
-
-    return Category.fromJson(res.data);
+        documentId: categoryId);
   }
 
   Future<String> uploadImage(InputFile image) async {

@@ -3,29 +3,35 @@ class Spending {
   final DateTime date;
   final double price;
   final String? note;
-  final String userID;
-  final String categoryID;
-  final String? imageID;
+  final String userId;
+  final String categoryId;
+  final String? imageId;
 
-
-  Spending({required this.name, required this.date, required this.price, required this.userID, required this.categoryID, this.imageID, this.note});
+  Spending(
+      {required this.name,
+      required this.date,
+      required this.price,
+      required this.userId,
+      required this.categoryId,
+      this.imageId,
+      this.note});
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'date': date == null ? null : date.toIso8601String(),
-    'price': price.toDouble(),
-    'note': note,
-    'userID': userID,
-    'categoryID': categoryID,
-    'imageID': imageID,
-  };
+        'name': name,
+        'date': date == null ? null : date.toIso8601String(),
+        'price': price.toDouble(),
+        'note': note,
+        'userID': userId,
+        'categoryID': categoryId,
+        'imageID': imageId,
+      };
 
   Spending.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         date = DateTime.parse(json['date'].toString()),
         price = json['price'].toDouble(),
         note = json['note'],
-        userID = json['userID'],
-        categoryID = json['categoryID'],
-        imageID = json['imageID'];
+        userId = json['userID'],
+        categoryId = json['categoryID'],
+        imageId = json['imageID'];
 }

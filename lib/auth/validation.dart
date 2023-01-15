@@ -6,7 +6,7 @@ String? emailValidation(String? value) {
 }
 
 String? nameValidation(String? value) {
-  if (value == null || value.isEmpty ) {
+  if (value == null || value.isEmpty) {
     return 'Enter a valid name';
   }
   return null;

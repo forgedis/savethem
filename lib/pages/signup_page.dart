@@ -1,9 +1,8 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:savethem/app_tree.dart';
-import 'package:savethem/main.dart';
+import '../app_tree.dart';
+import '../main.dart';
 import '../auth/validation.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
@@ -16,16 +15,15 @@ class SignupPage extends ConsumerStatefulWidget {
 
 class _SignupState extends ConsumerState<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-  String? email;
-  String? password;
+  String? _email;
+  String? _password;
   String? name;
-
   bool _obscuredText = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF261c51),
+      backgroundColor: const Color(0xFF261c51),
       body: SafeArea(
           child: Form(
         key: _formKey,
@@ -36,8 +34,8 @@ class _SignupState extends ConsumerState<SignupPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 50),
-                Center(
+                const SizedBox(height: 50),
+                const Center(
                   child: Text(
                     'SaveThem',
                     style: TextStyle(
@@ -46,9 +44,9 @@ class _SignupState extends ConsumerState<SignupPage> {
                         color: Colors.white),
                   ),
                 ),
-                SizedBox(height: 200),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                const SizedBox(height: 200),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
                     'Email',
                     style: TextStyle(
@@ -57,39 +55,39 @@ class _SignupState extends ConsumerState<SignupPage> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 TextFormField(
                   validator: emailValidation,
-                  onSaved: (value) => email = value,
+                  onSaved: (value) => _email = value,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
-                        borderSide:
-                            BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF8a5bf5), width: 2),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
-                        borderSide:
-                            BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF8a5bf5), width: 2),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF8a5bf5), width: 2),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide:
                               BorderSide(color: Colors.red.shade900, width: 2)),
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.email,
                         color: Colors.white,
                       )),
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 15),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                const SizedBox(height: 15),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
                     'Name',
                     style: TextStyle(
@@ -98,39 +96,39 @@ class _SignupState extends ConsumerState<SignupPage> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 TextFormField(
                   validator: nameValidation,
                   onSaved: (value) => name = value,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
-                        borderSide:
-                            BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF8a5bf5), width: 2),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
-                        borderSide:
-                            BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF8a5bf5), width: 2),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF8a5bf5), width: 2),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide:
                               BorderSide(color: Colors.red.shade900, width: 2)),
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.person,
                         color: Colors.white,
                       )),
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 15),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                const SizedBox(height: 15),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Text(
                     'Password',
                     style: TextStyle(
@@ -139,32 +137,32 @@ class _SignupState extends ConsumerState<SignupPage> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 TextFormField(
                   validator: passwordValidation,
-                  onSaved: (value) => password = value,
+                  onSaved: (value) => _password = value,
                   obscureText: _obscuredText,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide:
-                          BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide:
-                          BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          BorderSide(color: Color(0xFF8a5bf5), width: 2),
+                          const BorderSide(color: Color(0xFF8a5bf5), width: 2),
                       borderRadius: BorderRadius.circular(30),
                     ),
                     errorBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
                         borderSide:
                             BorderSide(color: Colors.red.shade900, width: 2)),
-                    prefixIcon: Icon(Icons.vpn_key, color: Colors.white),
+                    prefixIcon: const Icon(Icons.vpn_key, color: Colors.white),
                     suffixIcon: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -178,20 +176,20 @@ class _SignupState extends ConsumerState<SignupPage> {
                           color: Colors.white),
                     ),
                   ),
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     CircleAvatar(
                       radius: 25,
-                      backgroundColor: Color(0xFFf1cb46),
+                      backgroundColor: const Color(0xFFf1cb46),
                       child: IconButton(
                         onPressed: validateAndRegister,
                         icon: const Icon(Icons.arrow_forward,
                             color: Colors.black, size: 30),
-                        color: Color(0xFFf1cb46),
+                        color: const Color(0xFFf1cb46),
                       ),
                     ),
                   ],
@@ -212,8 +210,8 @@ class _SignupState extends ConsumerState<SignupPage> {
         await ref.read(appwriteAccountProvider).create(
             userId: 'unique()',
             name: name!,
-            email: email!,
-            password: password!);
+            email: _email!,
+            password: _password!);
         Navigator.of(context).pushReplacementNamed(AppTree.routeName);
       } on AppwriteException catch (e) {
         debugPrint(e.message);

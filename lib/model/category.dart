@@ -1,17 +1,15 @@
 class Category {
-
   final String name;
-  final String userID;
+  final String userId;
 
-  Category({required this.name, required this.userID});
+  Category({required this.name, required this.userId});
 
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'userID': userID,
-  };
+        'name': name,
+        'userID': userId,
+      };
 
   Category.fromJson(Map<String, dynamic> json)
       : name = json['name'],
-        userID = json['userID'];
-
+        userId = json['userID'];
 }

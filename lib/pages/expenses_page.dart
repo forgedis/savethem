@@ -11,7 +11,7 @@ class ExpensesPage extends StatefulWidget {
 class _ExpensesPageState extends State<ExpensesPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Color(0xFF261c51),
       body: Center(
         child: Text('Expences Screen', style: TextStyle(fontSize: 40, color: Colors.white)),

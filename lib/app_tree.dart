@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:savethem/pages/add_page.dart';
-import 'package:savethem/pages/expenses_page.dart';
-import 'package:savethem/pages/home_page.dart';
-import 'package:savethem/pages/category_page.dart';
-import 'package:savethem/pages/profile_page.dart';
+import 'pages/add_page.dart';
+import 'pages/expenses_page.dart';
+import 'pages/home_page.dart';
+import 'pages/category_page.dart';
+import 'pages/profile_page.dart';
 
 class AppTree extends StatefulWidget {
   const AppTree({Key? key}) : super(key: key);
@@ -14,41 +14,42 @@ class AppTree extends StatefulWidget {
 }
 
 class _AppTreeState extends State<AppTree> {
-  int currentTab = 0;
-  final List<Widget> screens = [
-    HomePage(),
-    CategoryPage(),
-    ProfilePage(),
-    ExpensesPage(),
-    AddPage()
-  ];
+  int _currentTab = 0;
+
+  // final List<Widget> screens = [
+  //   HomePage(),
+  //   CategoryPage(),
+  //   ProfilePage(),
+  //   ExpensesPage(),
+  //   AddPage()
+  // ];
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = HomePage();
+  Widget currentScreen = const HomePage();
 
   @override
   Widget build(BuildContext context) {
     bool keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
-      backgroundColor: Color(0xFF261c51),
+      backgroundColor: const Color(0xFF261c51),
       body: PageStorage(bucket: bucket, child: currentScreen),
       floatingActionButton: Visibility(
         visible: !keyboardIsOpen,
         child: FloatingActionButton(
-          child: Icon(Icons.add, color: Colors.black),
-          backgroundColor: Color(0xFFf1cb46),
+          backgroundColor: const Color(0xFFf1cb46),
           onPressed: () {
             setState(() {
-              currentScreen = AddPage();
-              currentTab = 4;
+              currentScreen = const AddPage();
+              _currentTab = 4;
             });
           },
+          child: const Icon(Icons.add, color: Colors.black),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        color: Color(0xFF8a5bf5),
+        shape: const CircularNotchedRectangle(),
+        color: const Color(0xFF8a5bf5),
         notchMargin: 10,
         child: Container(
           height: 60,
@@ -63,8 +64,8 @@ class _AppTreeState extends State<AppTree> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = HomePage();
-                        currentTab = 0;
+                        currentScreen = const HomePage();
+                        _currentTab = 0;
                       });
                     },
                     child: Column(
@@ -72,15 +73,15 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.home,
-                          color: currentTab == 0
-                              ? Color(0xFFf1cb46)
+                          color: _currentTab == 0
+                              ? const Color(0xFFf1cb46)
                               : Colors.black,
                         ),
                         Text(
                           'Home',
                           style: TextStyle(
-                              color: currentTab == 0
-                                  ? Color(0xFFf1cb46)
+                              color: _currentTab == 0
+                                  ? const Color(0xFFf1cb46)
                                   : Colors.black),
                         )
                       ],
@@ -90,8 +91,8 @@ class _AppTreeState extends State<AppTree> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = ExpensesPage();
-                        currentTab = 1;
+                        currentScreen = const ExpensesPage();
+                        _currentTab = 1;
                       });
                     },
                     child: Column(
@@ -99,15 +100,15 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.euro,
-                          color: currentTab == 1
-                              ? Color(0xFFf1cb46)
+                          color: _currentTab == 1
+                              ? const Color(0xFFf1cb46)
                               : Colors.black,
                         ),
                         Text(
                           'Expences',
                           style: TextStyle(
-                              color: currentTab == 1
-                                  ? Color(0xFFf1cb46)
+                              color: _currentTab == 1
+                                  ? const Color(0xFFf1cb46)
                                   : Colors.black),
                         )
                       ],
@@ -124,8 +125,8 @@ class _AppTreeState extends State<AppTree> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = CategoryPage();
-                        currentTab = 2;
+                        currentScreen = const CategoryPage();
+                        _currentTab = 2;
                       });
                     },
                     child: Column(
@@ -133,13 +134,15 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.list,
-                          color: currentTab == 2 ? Color(0xFFf1cb46) : Colors.black,
+                          color: _currentTab == 2
+                              ? const Color(0xFFf1cb46)
+                              : Colors.black,
                         ),
                         Text(
                           'Categories',
                           style: TextStyle(
-                              color: currentTab == 2
-                                  ? Color(0xFFf1cb46)
+                              color: _currentTab == 2
+                                  ? const Color(0xFFf1cb46)
                                   : Colors.black),
                         )
                       ],
@@ -149,8 +152,8 @@ class _AppTreeState extends State<AppTree> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = ProfilePage();
-                        currentTab = 3;
+                        currentScreen = const ProfilePage();
+                        _currentTab = 3;
                       });
                     },
                     child: Column(
@@ -158,13 +161,15 @@ class _AppTreeState extends State<AppTree> {
                       children: [
                         Icon(
                           Icons.person,
-                          color: currentTab == 3 ? Color(0xFFf1cb46) : Colors.black,
+                          color: _currentTab == 3
+                              ? const Color(0xFFf1cb46)
+                              : Colors.black,
                         ),
                         Text(
                           'Profile',
                           style: TextStyle(
-                              color: currentTab == 3
-                                  ? Color(0xFFf1cb46)
+                              color: _currentTab == 3
+                                  ? const Color(0xFFf1cb46)
                                   : Colors.black),
                         )
                       ],
