@@ -361,7 +361,7 @@ class _AddState extends ConsumerState<AddPage> {
 
                         // Getting categoryId
                         final categoryId = await ApiService.instance
-                            .getCategoryID(categoryName: _dropdownValue);
+                            .getCategoryId(categoryName: _dropdownValue);
 
                         // Getting user
                         final user =

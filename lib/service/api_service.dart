@@ -26,6 +26,7 @@ class ApiService {
       _instance = ApiService._internal();
     }
     return _instance!;
+
   }
 
   Future<User> getUser() async {
@@ -83,7 +84,7 @@ class ApiService {
     return categoryList;
   }
 
-  Future<Category> getCategoryByID({required String categoryId}) async {
+  Future<Category> getCategoryById({required String categoryId}) async {
     final res = await _database.getDocument(
         databaseId: '63bad69541af7c758859',
         collectionId: '63c026a2bc6acf48e1e3',
@@ -92,7 +93,7 @@ class ApiService {
     return Category.fromJson(res.data);
   }
 
-  Future<String> getCategoryID({required String categoryName}) async {
+  Future<String> getCategoryId({required String categoryName}) async {
     String categoryId = '';
     final res = await _database.listDocuments(
         databaseId: '63bad69541af7c758859',

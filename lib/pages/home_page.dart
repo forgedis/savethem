@@ -32,9 +32,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     _spendings = await ApiService.instance.getSpending(userId: _user.$id);
     await Future.forEach(_spendings, (element) async {
       var category = await ApiService.instance
-          .getCategoryByID(categoryId: element.categoryId);
+          .getCategoryById(categoryId: element.categoryId);
       _categories.add(await ApiService.instance
-          .getCategoryByID(categoryId: element.categoryId));
+          .getCategoryById(categoryId: element.categoryId));
       _usedCategoryDataMap[category] = element.price;
     });
 

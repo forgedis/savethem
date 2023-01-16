@@ -246,7 +246,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                                             onPressed: () async {
                                               final categoryId =
                                                   await ApiService.instance
-                                                      .getCategoryID(
+                                                      .getCategoryId(
                                                           categoryName: snapshot
                                                               .data![index]
                                                               .name);
@@ -266,7 +266,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                                             onPressed: () async {
                                               final categoryId =
                                                   await ApiService.instance
-                                                      .getCategoryID(
+                                                      .getCategoryId(
                                                           categoryName: snapshot
                                                               .data![index]
                                                               .name);
