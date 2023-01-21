@@ -129,6 +129,7 @@ class _AddState extends ConsumerState<AddPage> {
               ),
               const SizedBox(height: 5),
               TextField(
+                readOnly: true,
                 controller: _dateTEC,
                 decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
