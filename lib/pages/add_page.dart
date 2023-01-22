@@ -255,8 +255,6 @@ class _AddState extends State<AddPage> {
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 15),
-                        underline: Container(
-                            height: 2, color: const Color(0xFFf1cb46)),
                         onChanged: (String? value) {
                           // This is called when the user selects an item.
                           setState(() {

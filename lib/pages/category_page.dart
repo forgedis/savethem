@@ -151,7 +151,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
                 onPressed: () async {
                   Category updatedCategory =
-                      Category(name: _editCategoryTEC.text, userId: _user.$id);
+                      Category(name: _editCategoryTEC.text, userId: _user.id);
 
                   await ApiService.instance.updateCategory(
                       categoryId: _editCategoryId,

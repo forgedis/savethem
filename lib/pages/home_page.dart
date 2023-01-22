@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                 ],
                 if (!_isLoading) ...[
                   Text(
-                    'Welcome back \n' + _user.name,
+                    'Welcome \n' + _user.name,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
