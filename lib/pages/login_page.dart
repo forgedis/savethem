@@ -32,17 +32,14 @@ class _LoginState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 50),
                 const Center(
-                  child: Text(
-                    'SaveThem',
-                    style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
+                  child: Image(
+                    image: AssetImage('assets/images/savethem_logo.png'),
+                    height: 300,
+                    width: 300,
+                  )
                 ),
-                const SizedBox(height: 300),
+                const SizedBox(height: 100),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   child: Text(

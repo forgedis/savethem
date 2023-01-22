@@ -42,17 +42,13 @@ class _LoginState extends State<LoginOrSignupPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 50),
               const Center(
-                child: Text(
-                  'SaveThem',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 35),
-                ),
-              ),
-              const SizedBox(height: 350),
+                  child: Image(
+                image: AssetImage('assets/images/savethem_logo.png'),
+                height: 300,
+                width: 300,
+              )),
+              const SizedBox(height: 200),
               ElevatedButton(
                 onPressed: () {
                   Navigator.of(context)
