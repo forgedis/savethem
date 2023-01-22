@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:mat_month_picker_dialog/mat_month_picker_dialog.dart';
 import 'package:savethem/model/spending.dart';
 import 'package:savethem/service/api_service.dart';
-import '../main.dart';
 
-class ExpensesPage extends ConsumerStatefulWidget {
+class ExpensesPage extends StatefulWidget {
   const ExpensesPage({Key? key}) : super(key: key);
   static const String routeName = '/expensespage';
 
   @override
-  ConsumerState<ExpensesPage> createState() => _ExpensesPageState();
+  State<ExpensesPage> createState() => _ExpensesPageState();
 }
 
-class _ExpensesPageState extends ConsumerState<ExpensesPage> {
+class _ExpensesPageState extends State<ExpensesPage> {
   List<Spending> _spendings = [];
   final _date1TEC = TextEditingController();
   DateTime _date1 = DateTime.now();
@@ -38,7 +36,7 @@ class _ExpensesPageState extends ConsumerState<ExpensesPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Center(
-                  child: Text('Comapare months',
+                  child: Text('Compare months',
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -177,10 +175,9 @@ class _ExpensesPageState extends ConsumerState<ExpensesPage> {
                       double price1 = 0;
                       double price2 = 0;
 
-                      final user =
-                          await ref.read(appwriteAccountProvider).get();
-                      _spendings = await ApiService.instance
-                          .getSpending(userId: user.$id);
+                      String userId = await ApiService.instance.getUserId();
+                      _spendings =
+                          await ApiService.instance.getSpending(userId: userId);
 
                       _spendings.forEach((element) {
                         if (element.date.month == _date1.month) {

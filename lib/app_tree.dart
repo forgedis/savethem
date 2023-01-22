@@ -16,14 +16,6 @@ class AppTree extends StatefulWidget {
 class _AppTreeState extends State<AppTree> {
   int _currentTab = 0;
 
-  // final List<Widget> screens = [
-  //   HomePage(),
-  //   CategoryPage(),
-  //   ProfilePage(),
-  //   ExpensesPage(),
-  //   AddPage()
-  // ];
-
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = const HomePage();
 
@@ -105,7 +97,7 @@ class _AppTreeState extends State<AppTree> {
                               : Colors.black,
                         ),
                         Text(
-                          'Expences',
+                          'Expenses',
                           style: TextStyle(
                               color: _currentTab == 1
                                   ? const Color(0xFFf1cb46)

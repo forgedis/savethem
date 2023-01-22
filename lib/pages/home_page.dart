@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pie_chart/pie_chart.dart';
 import '../service/api_service.dart';
-import '../main.dart';
 import '../model/category.dart';
 import '../model/spending.dart';
 
-class HomePage extends ConsumerStatefulWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   static const String routeName = '/homepage';
 
   @override
-  ConsumerState<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
+class _HomePageState extends State<HomePage> {
   late final _user;
   List<Spending> _spendings = [];
   List<Category> _categories = [];
@@ -28,8 +26,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   void fetchData() async {
     setState(() => _isLoading = true);
 
-    _user = await ref.read(appwriteAccountProvider).get();
-    _spendings = await ApiService.instance.getSpending(userId: _user.$id);
+    _user = await ApiService.instance.getUser();
+    _spendings = await ApiService.instance.getSpending(userId: _user.id);
     await Future.forEach(_spendings, (element) async {
       var category = await ApiService.instance
           .getCategoryById(categoryId: element.categoryId);
@@ -42,7 +40,12 @@ class _HomePageState extends ConsumerState<HomePage> {
       Map<String, double> tempMap = _usedCategoryDataMap.map((key, value) {
         return MapEntry(key.name, value);
       });
-      _dataMap = tempMap;
+
+      if (tempMap.isEmpty) {
+        _dataMap['No data'] = 0;
+      } else {
+        _dataMap = tempMap;
+      }
 
       for (var element in _spendings) {
         _totalPrice += element.price;
@@ -78,6 +81,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 if (!_isLoading) ...[
                   Text(
                     'Welcome back \n' + _user.name,
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

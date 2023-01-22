@@ -3,26 +3,24 @@ import 'package:appwrite/appwrite.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../model/spending.dart';
 import 'home_page.dart';
 import '../service/api_service.dart';
 import 'package:intl/intl.dart';
-import '../main.dart';
 import '../model/category.dart';
 
 List<String> categoryNames = [''];
 
-class AddPage extends ConsumerStatefulWidget {
+class AddPage extends StatefulWidget {
   const AddPage({Key? key}) : super(key: key);
   static const String routeName = '/signup';
 
   @override
-  ConsumerState<AddPage> createState() => _AddState();
+  State<AddPage> createState() => _AddState();
 }
 
-class _AddState extends ConsumerState<AddPage> {
+class _AddState extends State<AddPage> {
   final _nameTEC = TextEditingController();
   final _dateTEC = TextEditingController();
   final _priceTEC = TextEditingController();
@@ -39,8 +37,8 @@ class _AddState extends ConsumerState<AddPage> {
   This method gets data from the database and also sets data for categoryNames
    */
   void fetchData() async {
-    final user = await ref.read(appwriteAccountProvider).get();
-    _categoryList = await ApiService.instance.getCategory(userId: user.$id);
+    String userId = await ApiService.instance.getUserId();
+    _categoryList = await ApiService.instance.getCategory(userId: userId);
 
     setState(() {
       for (var element in _categoryList) {
@@ -364,9 +362,8 @@ class _AddState extends ConsumerState<AddPage> {
                         final categoryId = await ApiService.instance
                             .getCategoryId(categoryName: _dropdownValue);
 
-                        // Getting user
-                        final user =
-                            await ref.read(appwriteAccountProvider).get();
+                        // Getting userId
+                        String userId = await ApiService.instance.getUserId();
 
                         // Creating spending object
                         final data = Spending(
@@ -375,7 +372,7 @@ class _AddState extends ConsumerState<AddPage> {
                           price: double.parse(_priceTEC.text),
                           note: _noteTEC.text,
                           categoryId: categoryId,
-                          userId: user.$id,
+                          userId: userId,
                           imageId: _imageId,
                         );
 

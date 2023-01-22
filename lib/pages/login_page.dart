@@ -1,19 +1,18 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:savethem/service/api_service.dart';
 import '../app_tree.dart';
-import '../auth/validation.dart';
-import '../main.dart';
+import '../resources/validation.dart';
 
-class LoginPage extends ConsumerStatefulWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
   static const String routeName = '/login';
 
   @override
-  ConsumerState<LoginPage> createState() => _LoginState();
+  State<LoginPage> createState() => _LoginState();
 }
 
-class _LoginState extends ConsumerState<LoginPage> {
+class _LoginState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   String? _email;
   String? _password;
@@ -195,9 +194,8 @@ class _LoginState extends ConsumerState<LoginPage> {
       _formKey.currentState!.save();
 
       try {
-        await ref
-            .read(appwriteAccountProvider)
-            .createEmailSession(email: _email!, password: _password!);
+        await ApiService.instance
+            .loginUser(email: _email!, password: _password!);
         Navigator.of(context).pushReplacementNamed(AppTree.routeName);
       } on AppwriteException catch (e) {
         debugPrint(e.message);

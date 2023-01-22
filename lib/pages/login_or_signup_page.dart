@@ -1,23 +1,22 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:savethem/service/api_service.dart';
 import '../app_tree.dart';
 import 'login_page.dart';
 import 'signup_page.dart';
-import '../main.dart';
 
-class LoginOrSignupPage extends ConsumerStatefulWidget {
+class LoginOrSignupPage extends StatefulWidget {
   const LoginOrSignupPage({Key? key}) : super(key: key);
   static const String routeName = '/loginorsignuppage';
 
   @override
-  ConsumerState<LoginOrSignupPage> createState() => _LoginState();
+  State<LoginOrSignupPage> createState() => _LoginState();
 }
 
-class _LoginState extends ConsumerState<LoginOrSignupPage> {
+class _LoginState extends State<LoginOrSignupPage> {
   Future<void> checkCurrentUser() async {
     try {
-      final user = await ref.read(appwriteAccountProvider).get();
+      final user = await ApiService.instance.getUser();
       Navigator.of(context).pushReplacementNamed(
         AppTree.routeName,
       );

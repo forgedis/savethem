@@ -1,5 +1,5 @@
 import 'package:appwrite/appwrite.dart';
-import '../auth/resources/app_constants.dart';
+import '../resources/app_constants.dart';
 import '../model/spending.dart';
 import '../model/category.dart';
 import '../model/user.dart';
@@ -29,6 +29,21 @@ class ApiService {
 
   }
 
+  Future loginUser({required String email, required String password}) async {
+    final res = await _account.createEmailSession(email: email, password: password);
+    return res;
+  }
+
+  Future signUpUser({required String name, required String email, required String password}) async {
+    final res = await _account.create(userId: ID.unique(), email: email, password: password, name: name);
+    return res;
+  }
+
+  Future signOutUser() async {
+    final res = await _account.deleteSession(sessionId: 'current');
+    return res;
+  }
+
   Future<User> getUser() async {
     final currentUser = await _account.get();
     return User(
@@ -38,10 +53,16 @@ class ApiService {
         phone: currentUser.phone);
   }
 
+  Future<String> getUserId() async {
+    final currentUser = await _account.get();
+    String userId = currentUser.$id;
+    return userId;
+  }
+
   Future<Spending> addSpending({required Spending spending}) async {
     final res = await _database.createDocument(
-        databaseId: '63bad69541af7c758859',
-        collectionId: '63bad6a430f009791d53',
+        databaseId: AppConstants.databaseId,
+        collectionId: AppConstants.spendingCollectionId,
         documentId: ID.unique(),
         data: spending.toJson());
     return Spending.fromJson(res.data);
@@ -50,8 +71,8 @@ class ApiService {
   Future<List<Spending>> getSpending({required String userId}) async {
     List<Spending> spendingList = [];
     final res = await _database.listDocuments(
-        databaseId: '63bad69541af7c758859',
-        collectionId: '63bad6a430f009791d53',
+        databaseId: AppConstants.databaseId,
+        collectionId: AppConstants.spendingCollectionId,
         queries: [Query.equal('userID', userId)]);
 
     for (var element in res.documents) {
@@ -63,8 +84,8 @@ class ApiService {
 
   Future<Category> addCategory({required Category category}) async {
     final res = await _database.createDocument(
-        databaseId: '63bad69541af7c758859',
-        collectionId: '63c026a2bc6acf48e1e3',
+        databaseId: AppConstants.databaseId,
+        collectionId: AppConstants.categoryCollectionId,
         documentId: ID.unique(),
         data: category.toJson());
     return Category.fromJson(res.data);
@@ -73,8 +94,8 @@ class ApiService {
   Future<List<Category>> getCategory({required String userId}) async {
     List<Category> categoryList = [];
     final res = await _database.listDocuments(
-        databaseId: '63bad69541af7c758859',
-        collectionId: '63c026a2bc6acf48e1e3',
+        databaseId: AppConstants.databaseId,
+        collectionId: AppConstants.categoryCollectionId,
         queries: [Query.equal('userID', userId)]);
 
     for (var element in res.documents) {
@@ -86,8 +107,8 @@ class ApiService {
 
   Future<Category> getCategoryById({required String categoryId}) async {
     final res = await _database.getDocument(
-        databaseId: '63bad69541af7c758859',
-        collectionId: '63c026a2bc6acf48e1e3',
+        databaseId: AppConstants.databaseId,
+        collectionId: AppConstants.categoryCollectionId,
         documentId: categoryId);
 
     return Category.fromJson(res.data);
@@ -96,8 +117,8 @@ class ApiService {
   Future<String> getCategoryId({required String categoryName}) async {
     String categoryId = '';
     final res = await _database.listDocuments(
-        databaseId: '63bad69541af7c758859',
-        collectionId: '63c026a2bc6acf48e1e3',
+        databaseId: AppConstants.databaseId,
+        collectionId: AppConstants.categoryCollectionId,
         queries: [Query.equal('name', categoryName)]);
 
     for (var element in res.documents) {
@@ -109,8 +130,8 @@ class ApiService {
   Future<Category> updateCategory(
       {required String categoryId, required Category categoryToUpdate}) async {
     final res = await _database.updateDocument(
-        databaseId: '63bad69541af7c758859',
-        collectionId: '63c026a2bc6acf48e1e3',
+        databaseId: AppConstants.databaseId,
+        collectionId: AppConstants.categoryCollectionId,
         documentId: categoryId,
         data: categoryToUpdate.toJson());
 
@@ -119,14 +140,14 @@ class ApiService {
 
   void deleteCategory({required String categoryId}) async {
     await _database.deleteDocument(
-        databaseId: '63bad69541af7c758859',
-        collectionId: '63c026a2bc6acf48e1e3',
+        databaseId: AppConstants.databaseId,
+        collectionId: AppConstants.categoryCollectionId,
         documentId: categoryId);
   }
 
   Future<String> uploadImage(InputFile image) async {
     final res = await _storage.createFile(
-        bucketId: '63bd51f45c86e93c4606', fileId: ID.unique(), file: image);
+        bucketId: AppConstants.imageBucketId, fileId: ID.unique(), file: image);
     String id = res.$id;
     return id;
   }

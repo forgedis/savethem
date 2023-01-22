@@ -1,23 +1,22 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:savethem/service/api_service.dart';
 import '../app_tree.dart';
-import '../main.dart';
-import '../auth/validation.dart';
+import '../resources/validation.dart';
 
-class SignupPage extends ConsumerStatefulWidget {
+class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
   static const String routeName = '/signup';
 
   @override
-  ConsumerState<SignupPage> createState() => _SignupState();
+  State<SignupPage> createState() => _SignupState();
 }
 
-class _SignupState extends ConsumerState<SignupPage> {
+class _SignupState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
   String? _email;
   String? _password;
-  String? name;
+  String? _name;
   bool _obscuredText = true;
 
   @override
@@ -99,7 +98,7 @@ class _SignupState extends ConsumerState<SignupPage> {
                 const SizedBox(height: 5),
                 TextFormField(
                   validator: nameValidation,
-                  onSaved: (value) => name = value,
+                  onSaved: (value) => _name = value,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -207,11 +206,10 @@ class _SignupState extends ConsumerState<SignupPage> {
       _formKey.currentState!.save();
 
       try {
-        await ref.read(appwriteAccountProvider).create(
-            userId: 'unique()',
-            name: name!,
-            email: _email!,
-            password: _password!);
+        await ApiService.instance
+            .signUpUser(name: _name!, email: _email!, password: _password!);
+        await ApiService.instance
+            .loginUser(email: _email!, password: _password!);
         Navigator.of(context).pushReplacementNamed(AppTree.routeName);
       } on AppwriteException catch (e) {
         debugPrint(e.message);

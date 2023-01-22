@@ -1,20 +1,18 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../service/api_service.dart';
-import '../main.dart';
 import '../model/user.dart';
 import 'login_page.dart';
 
-class ProfilePage extends ConsumerStatefulWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends ConsumerState<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> {
   final _nameTEC = TextEditingController();
   final _emailTEC = TextEditingController();
   final _phoneTEC = TextEditingController();
@@ -215,9 +213,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     child: ElevatedButton(
                       onPressed: () async {
                         try {
-                          await ref
-                              .read(appwriteAccountProvider)
-                              .deleteSession(sessionId: 'current');
+                          await ApiService.instance.signOutUser();
                           Navigator.of(context).pushReplacementNamed(
                             LoginPage.routeName,
                           );

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../model/category.dart';
 import '../service/api_service.dart';
-import '../main.dart';
 
-class CategoryPage extends ConsumerStatefulWidget {
+class CategoryPage extends StatefulWidget {
   const CategoryPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<CategoryPage> createState() => _CategoryPageState();
+  State<CategoryPage> createState() => _CategoryPageState();
 }
 
-class _CategoryPageState extends ConsumerState<CategoryPage> {
+class _CategoryPageState extends State<CategoryPage> {
   late final _user;
   String _editCategoryId = '';
   String _deleteCategoryId = '';
@@ -22,7 +20,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
 
   void getUser() async {
     setState(() => _isLoading = true);
-    final retrievedUser = await ref.read(appwriteAccountProvider).get();
+    final retrievedUser = await ApiService.instance.getUser();
 
     setState(() {
       _user = retrievedUser;
@@ -82,10 +80,8 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                   ),
                 ),
                 onPressed: () async {
-                  final user = await ref.read(appwriteAccountProvider).get();
-
                   final data =
-                      Category(name: _addCategoryTEC.text, userId: user.$id);
+                      Category(name: _addCategoryTEC.text, userId: _user.id);
                   final category =
                       await ApiService.instance.addCategory(category: data);
                   Navigator.pop(context);
@@ -215,8 +211,7 @@ class _CategoryPageState extends ConsumerState<CategoryPage> {
                   Container(
                     height: MediaQuery.of(context).size.height - 200,
                     child: FutureBuilder<List<Category>>(
-                      future:
-                          ApiService.instance.getCategory(userId: _user.$id),
+                      future: ApiService.instance.getCategory(userId: _user.id),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return ListView.builder(
